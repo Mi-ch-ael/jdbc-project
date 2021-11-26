@@ -4,19 +4,17 @@ import java.util.List;
 
 public class ResultFormatter {
 	
-	static void formatMenu(List<List<String>> result) {
+	static void format(List<List<String>> result, String template, String header) {
 		if(result == null) {
-			System.err.print("Menu fetching failed");
+			System.err.print("Query failed, nothing to display");
 			return;
 		}
-		System.out.println("=== Menu ===");
+		System.out.println(header);
 		if(result.size() == 0) {
 			System.out.println("<empty>");
 		}
 		for(List<String> line: result) {
-			System.out.format("%s: %s per one dish, usually served in %s minutes\n",
-					line.toArray());
+			System.out.format(template + "\n", line.toArray());
 		}
-		
 	}
 }
