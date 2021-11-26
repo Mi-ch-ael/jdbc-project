@@ -36,6 +36,11 @@ public class Main {
 				ResultFormatter.format(dao.getOrdersAfter(null), 
 						"%s %s ordered %s at %s", "=== Selected orders ===");
 				break;
+			case "-order-summary":
+				ResultFormatter.format(dao.getOrderSummary(),
+						"%s %s made an order on %s totaling %s with personal discount",
+						"=== Order summary ===");
+				break;
 			default:
 				System.err.format("Warning: unrecognized option \"%s\". Skipped.\n",
 						args[i]);	

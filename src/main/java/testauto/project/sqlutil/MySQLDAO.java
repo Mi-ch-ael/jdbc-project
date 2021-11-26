@@ -50,6 +50,37 @@ public class MySQLDAO implements Closeable {
 		return strings;
 	}
 	
+	public List<List<String>> getOrderSummary() {
+		ResultSet result = null;
+		Statement query = null;
+		List<List<String>> lines = new ArrayList<List<String>>();
+		try {
+			query = this.connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
+					ResultSet.CONCUR_READ_ONLY);
+			result = query.executeQuery(
+						"select firstName, lastName, issuedAt, "
+						+ "sum(menu.price)*(1-client.discount) as total "
+						+ "from client "
+						+ "join clientOrder using(clientId) "
+						+ "join dishInOrder using(orderId) "
+						+ "join menu using(dishId) "
+						+ "group by clientOrder.orderId;"
+					);
+			while(result.next()) {
+				List<String> line = new ArrayList<String>();
+				lines.add(line);
+				line.add(result.getString("firstName"));
+				line.add(result.getString("lastName"));
+				line.add(result.getString("issuedAt"));
+				line.add(Double.toString(result.getDouble("total")));
+			}
+		}
+		catch(Exception ex) {
+			return null;
+		}
+		return lines;
+	}
+	
 	public List<List<String>> getOrdersAfter(String timeString) {
 		ResultSet result = null;
 		PreparedStatement query = null;
